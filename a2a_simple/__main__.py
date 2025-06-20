@@ -3,10 +3,11 @@ from a2a.server.apps import A2AStarletteApplication
 from a2a.server.request_handlers import DefaultRequestHandler
 from a2a.server.tasks import InMemoryTaskStore
 from a2a.types import AgentCapabilities, AgentCard, AgentSkill
-from agent_executor import GreetingAgentExecutor
+from .agent_executor import GreetingAgentExecutor
 
 
 def main():
+    print("Agent Skill")
     skill = AgentSkill(
         id="hello_world",
         name="Greet",
@@ -14,7 +15,7 @@ def main():
         tags=["greeting", "hello", "world"],
         examples=["Hey", "Hello", "Hi"],
     )
-
+    print("agent card")
     agent_card = AgentCard(
         name="Greeting Agent",
         description="A simple agent that returns a greeting",
@@ -25,17 +26,17 @@ def main():
         version="1.0.0",
         capabilities=AgentCapabilities(),
     )
-
+    print("request handler")
     request_handler = DefaultRequestHandler(
         agent_executor=GreetingAgentExecutor(),
         task_store=InMemoryTaskStore(),
     )
-
+    print("server")
     server = A2AStarletteApplication(
         http_handler=request_handler,
         agent_card=agent_card,
     )
-
+    print("Running server on http://localhost:9999")
     uvicorn.run(server.build(), host="0.0.0.0", port=9999)
 
 
